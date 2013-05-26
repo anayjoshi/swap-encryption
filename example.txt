@@ -1,0 +1,19 @@
+Let us first review the basic design of an audio interface. As an application developer, you don't need to worry about this level of operation - its all taken care of by the device driver (which is one of the components that ALSA provides). But you do need to understand what is going at a conceptual level if you want to write efficient and flexible software.
+
+An audio interface is a device that allows a computer to receive and to send audio data from/to the outside world. Inside of the computer, audio data is represented a stream of bits, just like any other kind of data. However, the audio interface may send and receive audio as either an analog signal (a time-varying voltage) or as a digital signal (some stream of bits). In either case, the set of bits that the computer uses to represent a particular sound will need to be transformed before it is delivered to the outside world, and likewise, the external signal received by the interface will need to be transformed before it is useful to the computer. These two transformations are the raison d'etre of the audio interface.
+
+Within the audio interface is an area referred to as the "hardware buffer". As an audio signal arrives from the outside world, the interface converts it into a stream of bits usable by the computer and stores it in the part hardware buffer used to send data to the computer. When it has collected enough data in the hardware buffer, the interface interrupts the computer to tell it that it has data ready for it. A similar process happens in reverse for data being sent from the computer to the outside world. The interface interrupts the computer to tell it that there is space in the hardware buffer, and	 the computer proceeds to store data there. The interface later converts these bits into whatever form is needed to deliver it to the outside world, and delivers it. It is very important to understand that the interface uses this buffer as a "circular buffer". When it gets to the end of the buffer, it continues by wrapping around to the start.
+
+For this process to work correctly, there are a number of variables that need to be configured. They include:
+
+    what format should the interface use when converting between the bitstream used by the computer and the signal used in the outside world?
+    at what rate should samples be moved between the interface and the computer?
+    how much data (and/or space) should there be before the device interrupts the computer?
+    how big should the hardware buffer be? 
+
+The first two questions are fundamental in governing the quality of the audio data. The second two questions affect the "latency" of the audio signal. This term refers to the delay between
+
+    data arriving at the audio interface from the outside world, and it being available to the computer ("input latency")
+    data being delivered by the computer, and it being delivered to the outside world ("output latency") 
+
+
