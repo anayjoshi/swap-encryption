@@ -6,7 +6,7 @@
 #include<stdlib.h>
 #include"common.h"
 
-void encrypt(char** data) 
+void nibble_swap(char** data) 
 {
 /* exchange upper nibble and lower nibble.*/
     int i = 0;
