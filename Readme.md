@@ -1,8 +1,8 @@
 # Swap Encryption
 
-A handy tool to encrypt a file by the nibbles of every byte
+A handy tool to encrypt a file by swqpping the nibbles of every byte in a file
 
-usage:
+Usage:
 ```
 $ ./swap source dst
 ```
